@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Ekranı</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<script src="{% static 'js/crypto-js.min.js' %}"></script>
+
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            height: 50px;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 50px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        {% if messages %}
+        {% for message in messages %}
+        <div style="text-align: center;" class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}" onsubmit="return encryptData();">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="form-label">Kullanıcı Adı:</label>
+                <input type="text" name="username" class="form-control" id="adusername" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Şifre:</label>
+                <input type="password" name="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="submit-button">Giriş</button>
+        </form>
+    </div>
+<script>
+    function generateRandomIV() {
+    const array = new Uint8Array(16);
+    window.crypto.getRandomValues(array);
+    return CryptoJS.lib.WordArray.create(array);
+    }
+
+    function encryptData() {
+    const username = document.getElementById("adusername");
+    const password = document.getElementById("password");
+    const secret_key = CryptoJS.enc.Utf8.parse("random_şifre_gir");
+
+    const iv = generateRandomIV();
+    const encryptedUsername = CryptoJS.AES.encrypt(username.value, secret_key, { iv: iv }).ciphertext.toString(CryptoJS.enc.Base64);
+    const encryptedPassword = CryptoJS.AES.encrypt(password.value, secret_key, { iv: iv }).ciphertext.toString(CryptoJS.enc.Base64);
+
+    const ivString = CryptoJS.enc.Base64.stringify(iv);
+    adusername.value = ivString + ':' + encryptedUsername;
+    password.value = ivString + ':' + encryptedPassword;
+
+    return true;
+    }
+
+</script>
+
+
+</body>
+</html>
