@@ -3,8 +3,7 @@ Uygulamayı kullanacak kişiler LDAP yapısı üzerinden kimlik doğrulama yapar
 
 Uygulama lokal ortamda kullanılan IIS sunucusu üzerinde çalışmaktadır. 
 
-![image](https://github.com/atorata/Django_SMS_Client_Project/assets/55991566/008f8059-ce27-46b9-a05e-0aa3c5dd6cff)
-
+![Ekran görüntüsü 2024-01-22 110751](https://github.com/atorata/Django_SMS_Client_Project/assets/55991566/71ab1335-36c0-4afd-b5f9-45579cc0a0d5)
 
 # ./ayarlar.py
 
